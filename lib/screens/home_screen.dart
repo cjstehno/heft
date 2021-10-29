@@ -10,6 +10,12 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Heft'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // FIXME: open the settings dialog
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
               // FIXME: open the add record dialog

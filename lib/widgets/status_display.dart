@@ -15,7 +15,7 @@ class StatusDisplay extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(12),
         child: Row(
-          children: const [
+          children: [
             WeightTrend(),
             Spacer(),
             CurrentWeight(),

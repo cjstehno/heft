@@ -28,7 +28,6 @@ class WeightLog extends StatelessWidget {
     return Container(
       // FIXME: calculate the height like I did in penguin
       height: 580,
-      padding: const EdgeInsets.all(10),
       child: ListView.builder(
         itemCount: records.length,
         // shrinkWrap: true,
@@ -59,10 +58,16 @@ class WeightLog extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: const [
-                  Icon(Icons.arrow_downward),
+                  Icon(
+                    Icons.arrow_downward,
+                    color: Colors.green,
+                  ),
                   Text(
                     '2',
-                    style: textStyle,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.green,
+                    ),
                   ),
                 ],
               ),
