@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:heft/screens/settings_screen.dart';
+import 'package:heft/screens/weight_record_screen.dart';
 import 'package:heft/widgets/status_display.dart';
 import 'package:heft/widgets/weight_log.dart';
 
@@ -11,9 +13,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {
-              // FIXME: open the settings dialog
-            },
+            onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.routeName),
           ),
           IconButton(
             icon: const Icon(Icons.share),
@@ -23,9 +23,7 @@ class HomeScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {
-              // FIXME: open the share dialog
-            },
+            onPressed: () => Navigator.of(context).pushNamed(WeightRecordScreen.routeName),
           ),
         ],
       ),
