@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:heft/providers/weight_records.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class WeightLog extends StatelessWidget {
   const WeightLog({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final records = [
-      300,
-      298,
-      245,
-      230,
-      228,
-      229,
-      220,
-      123,
-      122,
-      145,
-      100,
-      98,
-      90
-    ];
+  Widget build(final BuildContext context) {
+    context.watch<WeightRecords>();
+    final records = context.read<WeightRecords>().records;
 
-    // FIXME: maybe add a heading to the table "History"?
-
+    final dateFormat = DateFormat('M/d/yyyy');
+    final timeFormat = DateFormat('H:mm a');
     const textStyle = TextStyle(fontSize: 18);
 
     return Container(
@@ -37,22 +27,23 @@ class WeightLog extends StatelessWidget {
             leading: Container(
               width: 100,
               child: Column(
-                children: const [
+                children: [
                   Text(
-                    '10/01/2021',
-                    style: textStyle,
+                    dateFormat.format(records[idx].timestamp),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  Text('09:15 am'),
+                  Text(
+                    timeFormat.format(records[idx].timestamp),
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ],
               ),
               padding: const EdgeInsets.only(top: 10),
               alignment: Alignment.centerLeft,
             ),
             title: Center(
-                child: Text(
-              records[idx].toString(),
-              style: textStyle,
-            )),
+              child: Text(records[idx].weight.toString(), style: textStyle),
+            ),
             trailing: SizedBox(
               width: 45,
               child: Row(

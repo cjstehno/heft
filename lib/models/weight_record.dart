@@ -8,10 +8,19 @@ class WeightRecord {
   final DateTime timestamp;
 
   @HiveField(1)
-  final int weight;
+  final double weight;
 
   WeightRecord({
     required this.timestamp,
     required this.weight,
   });
+
+  WeightRecord copyWith({
+    DateTime? timestamp,
+    double? weight,
+  }) =>
+      WeightRecord(
+        timestamp: timestamp ?? this.timestamp,
+        weight: weight ?? this.weight,
+      );
 }

@@ -18,7 +18,7 @@ class WeightRecordAdapter extends TypeAdapter<WeightRecord> {
     };
     return WeightRecord(
       timestamp: fields[0] as DateTime,
-      weight: fields[1] as int,
+      weight: fields[1] as double,
     );
   }
 
