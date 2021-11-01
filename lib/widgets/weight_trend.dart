@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:heft/providers/weight_records.dart';
-import 'package:heft/widgets/trend.dart';
+import 'package:heft/widgets/recent_trend.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -12,16 +12,16 @@ class WeightTrend extends StatelessWidget {
     context.watch<WeightRecords>();
 
     final weightRecords = context.read<WeightRecords>();
-    final records = weightRecords.records;
-    final enabled = weightRecords.count > 1;
-    final change = enabled ? records[0].weight - records[1].weight : 0.0;
+    final mostRecent = weightRecords.mostRecent;
+    final within30d = weightRecords.oldestWithin(30);
+    final enabled = mostRecent != null && within30d != null;
 
     return Column(
       children: [
-        Trend(change, enabled),
+        RecentTrend(mostRecent, within30d,),
         Text(
           enabled
-              ? DateFormat('M/d/yyyy').format(records[1].timestamp)
+              ? DateFormat('M/d/yyyy').format(within30d!.timestamp)
               : '-/-/----',
           style: TextStyle(
             fontSize: 12,

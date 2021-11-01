@@ -17,6 +17,22 @@ class WeightRecords with ChangeNotifier {
     return _records.isNotEmpty ? records[0] : null;
   }
 
+  String get csv {
+    return records
+        .map((rec) => '${rec.timestamp},${rec.weight}')
+        .toList()
+        .join('\n');
+  }
+
+  WeightRecord? oldestWithin(final int days) {
+    if (count != 0) {
+      final boundary = DateTime.now().subtract(Duration(days: days));
+      return records.lastWhere((r) => r.timestamp.isAfter(boundary));
+    } else {
+      return null;
+    }
+  }
+
   void create(final WeightRecord record) {
     _records.add(record);
 
@@ -40,10 +56,10 @@ class WeightRecords with ChangeNotifier {
     notifyListeners();
   }
 
-  static List<WeightRecord> _sort(final List<WeightRecord> recs){
+  static List<WeightRecord> _sort(final List<WeightRecord> recs) {
     var working = [...recs];
 
-    working.sort((a,b) {
+    working.sort((a, b) {
       return b.timestamp.compareTo(a.timestamp);
     });
 

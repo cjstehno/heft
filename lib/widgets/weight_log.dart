@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:heft/screens/weight_record_screen.dart';
+import 'package:heft/widgets/record_trend.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -53,24 +54,9 @@ class WeightLog extends StatelessWidget {
                       child: Text(records[idx].weight.toString(),
                           style: textStyle),
                     ),
-                    trailing: SizedBox(
-                      width: 45,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Icon(
-                            Icons.arrow_downward,
-                            color: Colors.green,
-                          ),
-                          Text(
-                            '2',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
+                    trailing: RecordTrend(
+                      records[idx],
+                      idx + 1 < records.length ? records[idx + 1] : null,
                     ),
                     onTap: () {
                       Navigator.of(context).pushNamed(

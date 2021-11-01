@@ -141,7 +141,7 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
       return errMsg;
     }
 
-    final wt = double.parse(value!);
+    final wt = double.parse(value);
     if (wt < 1 || wt > maxWt) {
       return errMsg;
     }

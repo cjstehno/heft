@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:heft/providers/weight_records.dart';
 import 'package:heft/screens/settings_screen.dart';
 import 'package:heft/screens/weight_record_screen.dart';
 import 'package:heft/widgets/status_display.dart';
 import 'package:heft/widgets/weight_log.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
+    // FIXME: implement pull to refresh
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Heft'),
@@ -19,7 +24,11 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              // FIXME: open the share options
+              // FIXME: write the csv to a file then share that?
+              Share.share(
+                context.read<WeightRecords>().csv,
+                subject: 'Weight Records from Heft.',
+              );
             },
           ),
           IconButton(
