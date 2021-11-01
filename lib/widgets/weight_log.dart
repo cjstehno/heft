@@ -6,18 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class WeightLog extends StatelessWidget {
-  const WeightLog({Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) {
     context.watch<WeightRecords>();
     final records = context.read<WeightRecords>().records;
+    final media = MediaQuery.of(context);
 
     // FIXME: when coming back from record screen I keep getting view overflow
 
     return Container(
-      // FIXME: calculate the height like I did in penguin
-      height: 575,
+      margin: const EdgeInsets.only(top: 2),
       child: records.isNotEmpty
           ? ListView.builder(
               itemCount: records.length,
