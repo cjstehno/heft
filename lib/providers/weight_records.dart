@@ -1,5 +1,3 @@
-import 'dart:developer' as dev;
-
 import 'package:flutter/foundation.dart';
 import 'package:heft/models/weight_record.dart';
 
@@ -16,8 +14,6 @@ class WeightRecords with ChangeNotifier {
   void create(final WeightRecord record) {
     _records.add(record);
 
-    dev.log('Added record: $record', name: _tag);
-
     notifyListeners();
   }
 
@@ -29,13 +25,12 @@ class WeightRecords with ChangeNotifier {
       weight: record.weight,
     ));
 
-    dev.log('Updated record: $record', name: _tag);
-
     notifyListeners();
   }
 
-  // FIXME: support delete
-  void remove(final WeightRecord record) {
-    dev.log('Removed record: $record', name: _tag);
+  void remove(final String recordId) {
+    _records.removeWhere((r) => r.id == recordId);
+
+    notifyListeners();
   }
 }
