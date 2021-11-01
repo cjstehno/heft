@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:heft/providers/weight_records.dart';
+import 'package:provider/provider.dart';
 
 class CurrentWeight extends StatelessWidget {
   const CurrentWeight({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        Text(
-          '205',
-          style: TextStyle(
-            fontSize: 44,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          '10/20/2021',
-          style: TextStyle(
-            fontSize: 12,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
+  Widget build(final BuildContext context) {
+    context.watch<WeightRecords>();
+
+    final mostRecent = context.read<WeightRecords>().mostRecent;
+
+    return Text(
+      mostRecent.weight.toStringAsFixed(2),
+      style: const TextStyle(
+        fontSize: 42,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

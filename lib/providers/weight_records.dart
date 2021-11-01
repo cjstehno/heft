@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 
 class WeightRecords with ChangeNotifier {
@@ -7,8 +8,11 @@ class WeightRecords with ChangeNotifier {
   final List<WeightRecord> _records = [];
 
   List<WeightRecord> get records {
-    // FIXME: these should be sorted by date descending
-    return _records;
+    return _sort(_records);
+  }
+
+  WeightRecord get mostRecent {
+    return records[0];
   }
 
   void create(final WeightRecord record) {
@@ -32,5 +36,15 @@ class WeightRecords with ChangeNotifier {
     _records.removeWhere((r) => r.id == recordId);
 
     notifyListeners();
+  }
+
+  static List<WeightRecord> _sort(final List<WeightRecord> recs){
+    var working = [...recs];
+
+    working.sort((a,b) {
+      return b.timestamp.compareTo(a.timestamp);
+    });
+
+    return working;
   }
 }

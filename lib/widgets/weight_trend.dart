@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 class WeightTrend extends StatelessWidget {
   const WeightTrend({Key? key}) : super(key: key);
 
+  // FIXME: implement
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +21,7 @@ class WeightTrend extends StatelessWidget {
               '5',
               style: TextStyle(
                 color: Colors.red,
-                fontSize: 32,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),

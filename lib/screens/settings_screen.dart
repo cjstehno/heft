@@ -76,7 +76,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       initialValue: _getPrefString(snap.data!, _heightKey),
                       maxLines: 1,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        signed: false, decimal: true,
+                      ),
                       onChanged: (value) => _setPrefString(_heightKey, value),
                     ),
                   ],

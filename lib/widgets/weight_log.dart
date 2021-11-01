@@ -12,9 +12,11 @@ class WeightLog extends StatelessWidget {
     context.watch<WeightRecords>();
     final records = context.read<WeightRecords>().records;
 
+    // FIXME: when coming back from record screen I keep getting view overflow
+
     return Container(
       // FIXME: calculate the height like I did in penguin
-      height: 580,
+      height: 575,
       child: ListView.builder(
         itemCount: records.length,
         // shrinkWrap: true,
