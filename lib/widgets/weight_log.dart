@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heft/providers/weight_records.dart';
+import 'package:heft/screens/weight_record_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -11,10 +12,6 @@ class WeightLog extends StatelessWidget {
     context.watch<WeightRecords>();
     final records = context.read<WeightRecords>().records;
 
-    final dateFormat = DateFormat('M/d/yyyy');
-    final timeFormat = DateFormat('H:mm a');
-    const textStyle = TextStyle(fontSize: 18);
-
     return Container(
       // FIXME: calculate the height like I did in penguin
       height: 580,
@@ -23,7 +20,12 @@ class WeightLog extends StatelessWidget {
         // shrinkWrap: true,
         // physics: AlwaysScrollableScrollPhysics(),
         itemBuilder: (ctx, idx) {
+          final dateFormat = DateFormat('M/d/yyyy');
+          final timeFormat = DateFormat('H:mm a');
+          const textStyle = TextStyle(fontSize: 18);
+
           return ListTile(
+            key: ValueKey(records[idx].id),
             leading: Container(
               width: 100,
               child: Column(
@@ -63,6 +65,9 @@ class WeightLog extends StatelessWidget {
                 ],
               ),
             ),
+            onTap: (){
+              Navigator.of(context).pushNamed(WeightRecordScreen.routeName, arguments: records[idx]);
+            },
           );
         },
       ),

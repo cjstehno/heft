@@ -17,18 +17,21 @@ class WeightRecordAdapter extends TypeAdapter<WeightRecord> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return WeightRecord(
-      timestamp: fields[0] as DateTime,
-      weight: fields[1] as double,
+      id: fields[0] as String,
+      timestamp: fields[1] as DateTime,
+      weight: fields[2] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, WeightRecord obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.timestamp)
+      ..write(obj.id)
       ..writeByte(1)
+      ..write(obj.timestamp)
+      ..writeByte(2)
       ..write(obj.weight);
   }
 

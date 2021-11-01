@@ -34,3 +34,4 @@ https://codingwithdhrumil.com/2021/03/hive-flutter-local-database-example.html
 * support screen rotation
 * provide a link to BMI information (this is meant for adults)
 * medical disclaimer
+* consider writing a home screen widget for this (current wt + bmi + add button?)
