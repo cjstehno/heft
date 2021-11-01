@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 
 class WeightRecords with ChangeNotifier {
-  static const _tag = 'penguin.weightrecords';
-
   final List<WeightRecord> _records = [];
 
   List<WeightRecord> get records {
     return _sort(_records);
   }
 
-  WeightRecord get mostRecent {
-    return records[0];
+  int get count {
+    return _records.length;
+  }
+
+  WeightRecord? get mostRecent {
+    return _records.isNotEmpty ? records[0] : null;
   }
 
   void create(final WeightRecord record) {

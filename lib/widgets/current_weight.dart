@@ -12,11 +12,16 @@ class CurrentWeight extends StatelessWidget {
     final mostRecent = context.read<WeightRecords>().mostRecent;
 
     return Text(
-      mostRecent.weight.toStringAsFixed(2),
-      style: const TextStyle(
-        fontSize: 42,
-        fontWeight: FontWeight.bold,
-      ),
+      mostRecent != null ? mostRecent.weight.toStringAsFixed(1) : '0.0',
+      style: _style(mostRecent != null),
+    );
+  }
+
+  TextStyle _style(final bool enabled) {
+    return TextStyle(
+      fontSize: 42,
+      color: enabled ? Colors.black : Colors.black12,
+      fontWeight: FontWeight.bold,
     );
   }
 }

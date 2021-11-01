@@ -17,26 +17,28 @@ class BmiDisplay extends StatelessWidget {
       future: SharedPreferences.getInstance(),
       builder: (ctx, snap) {
         if (snap.hasData) {
-          final bmi = BmiCalculator.calculate(
-            _getPrefString(snap.data!, 'units') ?? 'imperial',
-            double.parse(_getPrefString(snap.data!, 'height') ?? '0.0'),
-            mostRecent.weight,
-          );
+          final Bmi? bmi = mostRecent != null
+              ? BmiCalculator.calculate(
+                  _getPrefString(snap.data!, 'units') ?? 'imperial',
+                  double.parse(_getPrefString(snap.data!, 'height') ?? '0.0'),
+                  mostRecent.weight,
+                )
+              : null;
 
           return Column(
             children: [
               Text(
-                bmi.value.toStringAsFixed(1),
+                bmi != null ? bmi.value.toStringAsFixed(1) : '0.0',
                 style: TextStyle(
-                  color: _selectColor(bmi.category),
+                  color: _selectColor(bmi),
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                bmi.category.name,
+                bmi != null ? bmi.category.name : 'None',
                 style: TextStyle(
-                  color: _selectColor(bmi.category),
+                  color: _selectColor(bmi),
                   fontSize: 12,
                   fontStyle: FontStyle.italic,
                 ),
@@ -50,17 +52,20 @@ class BmiDisplay extends StatelessWidget {
     );
   }
 
-  Color _selectColor(final BmiCategory category) {
-    switch (category) {
-      case BmiCategory.underweight:
-        return Colors.red;
-      case BmiCategory.healthy:
-        return Colors.green;
-      case BmiCategory.overweight:
-        return Colors.orange;
-      case BmiCategory.obese:
-        return Colors.red;
+  Color _selectColor(final Bmi? bmi) {
+    if( bmi != null ){
+      switch (bmi.category) {
+        case BmiCategory.underweight:
+          return Colors.red;
+        case BmiCategory.healthy:
+          return Colors.green;
+        case BmiCategory.overweight:
+          return Colors.orange;
+        case BmiCategory.obese:
+          return Colors.red;
+      }
     }
+    return Colors.black12;
   }
 
   // FIXME: might be useful to have a provider or helper class for these
