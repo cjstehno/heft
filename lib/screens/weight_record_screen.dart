@@ -1,10 +1,10 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
+import 'package:heft/providers/preferences.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class WeightRecordScreen extends StatefulWidget {
@@ -23,7 +23,6 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
   WeightRecord _record = WeightRecord(
     id: const Uuid().v1(),
     timestamp: DateTime.now(),
-    // TODO: should populate from most recent record
     weight: 0,
   );
 
@@ -49,13 +48,11 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
       body: Container(
         padding: const EdgeInsets.all(10),
         child: FutureBuilder(
-          future: _prefs(),
+          future: Preferences.load(),
           builder: (ctx, snap) {
             if (snap.hasData) {
               final units =
-                  _getPrefString(snap.data as SharedPreferences, 'units');
-              final wtUnit = units == 'imperial' ? 'pounds' : 'kilograms';
-              final wtUnitAbb = units == 'imperial' ? 'lb' : 'kg';
+                  Preferences.fetchUnits(snap.data!) ?? Units.imperial;
 
               return Form(
                 key: _form,
@@ -89,16 +86,17 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
                       },
                       onSaved: (value) {
                         print('Saving: $value');
-                         _record = _record.copyWith(timestamp: value);
+                        _record = _record.copyWith(timestamp: value);
                       },
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Weight ($wtUnitAbb)',
-                        hintText: 'How much do you weigh (in $wtUnit)?',
+                        labelText: 'Weight (${units.weightUnitAbbr})',
+                        hintText:
+                            'How much do you weigh (in ${units.weightUnit})?',
                       ),
                       autofocus: true,
-                      validator: (value) => _weightValidator(value, wtUnitAbb),
+                      validator: (value) => _weightValidator(value, units),
                       initialValue:
                           _record.weight == 0 ? '' : _record.weight.toString(),
                       keyboardType: const TextInputType.numberWithOptions(
@@ -134,10 +132,18 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
     );
   }
 
-  String? _weightValidator(final String? value, final String wtUnits) {
-    // TODO: use units to determine range
+  String? _weightValidator(final String? value, final Units units) {
+    final maxWt = units == Units.imperial ? 1000.0 : 453.6;
+    final errMsg =
+        'Weight must be a number between 1 and $maxWt ${units.weightUnit}.';
+
     if (value == null || value.isEmpty || double.tryParse(value) == null) {
-      return 'Weight must be a number between 1 and 1000 $wtUnits';
+      return errMsg;
+    }
+
+    final wt = double.parse(value!);
+    if (wt < 1 || wt > maxWt) {
+      return errMsg;
     }
 
     return null;
@@ -155,14 +161,5 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
 
       Navigator.of(context).pop();
     }
-  }
-
-  // FIXME: should this be pulled into a provider?
-  Future<SharedPreferences> _prefs() async {
-    return SharedPreferences.getInstance();
-  }
-
-  String? _getPrefString(final Object prefs, final String key) {
-    return (prefs as SharedPreferences).getString(key);
   }
 }

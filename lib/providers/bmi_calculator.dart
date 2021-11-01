@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:heft/models/bmi.dart';
+import 'package:heft/providers/preferences.dart';
 
 // https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html
 class BmiCalculator {
-
-  static Bmi calculate(final String units, final double ht, final double wt) {
-    return units == 'metric'
+  static Bmi calculate(final Units units, final double ht, final double wt) {
+    return units == Units.metric
         ? _calculateMetrics(ht, wt)
         : _calculateImperial(ht, wt);
   }
@@ -32,36 +32,4 @@ class BmiCalculator {
       return BmiCategory.obese;
     }
   }
-}
-
-// FIXME: move these to models
-
-enum BmiCategory {
-  underweight,
-  healthy,
-  overweight,
-  obese,
-}
-
-extension BmiCategoryExt on BmiCategory {
-
-  String get name {
-    switch(this){
-      case BmiCategory.underweight:
-        return 'Underweight';
-      case BmiCategory.healthy:
-        return 'Healthy';
-      case BmiCategory.overweight:
-        return 'Overweight';
-      case BmiCategory.obese:
-        return 'Obese';
-    }
-  }
-}
-
-class Bmi {
-  final double value;
-  final BmiCategory category;
-
-  const Bmi(this.value, this.category);
 }

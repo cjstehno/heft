@@ -13,22 +13,24 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => Navigator.of(context).pushNamed(SettingsScreen.routeName),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(SettingsScreen.routeName),
           ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              // FIXME: open the add record dialog
+              // FIXME: open the share options
             },
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () => Navigator.of(context).pushNamed(WeightRecordScreen.routeName),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(WeightRecordScreen.routeName),
           ),
         ],
       ),
       body: Column(
-        children: [
+        children: const [
           StatusDisplay(),
           WeightLog(),
         ],

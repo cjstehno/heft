@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:heft/models/bmi.dart';
 import 'package:heft/providers/bmi_calculator.dart';
+import 'package:heft/providers/preferences.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class BmiDisplay extends StatelessWidget {
   const BmiDisplay({Key? key}) : super(key: key);
@@ -14,13 +15,13 @@ class BmiDisplay extends StatelessWidget {
     final mostRecent = context.read<WeightRecords>().mostRecent;
 
     return FutureBuilder(
-      future: SharedPreferences.getInstance(),
+      future: Preferences.load(),
       builder: (ctx, snap) {
         if (snap.hasData) {
           final Bmi? bmi = mostRecent != null
               ? BmiCalculator.calculate(
-                  _getPrefString(snap.data!, 'units') ?? 'imperial',
-                  double.parse(_getPrefString(snap.data!, 'height') ?? '0.0'),
+                  Preferences.fetchUnits(snap.data!) ?? Units.imperial,
+                  Preferences.fetchHeight(snap.data!) ?? 0.0,
                   mostRecent.weight,
                 )
               : null;
@@ -53,7 +54,7 @@ class BmiDisplay extends StatelessWidget {
   }
 
   Color _selectColor(final Bmi? bmi) {
-    if( bmi != null ){
+    if (bmi != null) {
       switch (bmi.category) {
         case BmiCategory.underweight:
           return Colors.red;
@@ -66,10 +67,5 @@ class BmiDisplay extends StatelessWidget {
       }
     }
     return Colors.black12;
-  }
-
-  // FIXME: might be useful to have a provider or helper class for these
-  String? _getPrefString(final Object prefs, final String key) {
-    return (prefs as SharedPreferences).getString(key);
   }
 }
