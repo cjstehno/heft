@@ -27,11 +27,13 @@ class HomeScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: () {
-                    // FIXME: write the csv to a file then share that?
-                    Share.share(
-                      context.read<WeightRecords>().csv,
-                      subject: 'Weight Records from Heft.',
-                    );
+                    context.read<WeightRecords>().export().then((file) {
+                      Share.shareFiles(
+                        [file.path],
+                        mimeTypes: ['text/plain'],
+                        subject: 'Weight Records from Heft.',
+                      ).then((_)=> file.delete());
+                    });
                   },
                 ),
                 IconButton(

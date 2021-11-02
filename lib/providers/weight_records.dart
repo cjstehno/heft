@@ -1,9 +1,11 @@
 import 'dart:developer' as dev;
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 class WeightRecords with ChangeNotifier {
   static const _tag = 'heft.provider.weightrecords';
@@ -28,11 +30,22 @@ class WeightRecords with ChangeNotifier {
     return _records.isNotEmpty ? records[0] : null;
   }
 
-  String get csv {
-    return records
-        .map((rec) => '${rec.timestamp},${rec.weight}')
-        .toList()
-        .join('\n');
+  Future<File> export() async {
+    final directory = await path_provider.getApplicationDocumentsDirectory();
+    final File exportFile = File(
+      '${directory.path}/heft-export-${DateTime.now().millisecondsSinceEpoch}.csv',
+    );
+
+    await exportFile.writeAsString(
+      records
+          .map((rec) => '${rec.timestamp},${rec.weight}')
+          .toList()
+          .join('\n'),
+    );
+    
+    dev.log('Exported ${_records.length} records to csv file (${exportFile.path}).');
+
+    return exportFile;
   }
 
   WeightRecord? oldestWithin(final int days) {

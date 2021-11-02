@@ -13,7 +13,7 @@ class WeightTrend extends StatelessWidget {
 
     final weightRecords = context.read<WeightRecords>();
     final mostRecent = weightRecords.mostRecent;
-    final within30d = weightRecords.oldestWithin(30);
+    final within30d = weightRecords.oldestWithin(90);
     final enabled = mostRecent != null && within30d != null;
 
     return Column(
