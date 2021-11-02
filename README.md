@@ -24,6 +24,7 @@ To Do:
 * [ ] ensure proper theme usage
 * [ ] about screen - medical disclaimer, link to BMI calc, this is intended for adults
 * [ ] create a home screen widget with current wt, bmi, and an "add" button
+* [ ] unit testing
 
 https://medium.com/flutter-community/storing-local-data-with-hive-and-provider-in-flutter-a49b6bdea75a
 https://blog.logrocket.com/handling-local-data-persistence-flutter-hive/

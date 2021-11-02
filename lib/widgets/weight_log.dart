@@ -11,9 +11,6 @@ class WeightLog extends StatelessWidget {
   Widget build(final BuildContext context) {
     context.watch<WeightRecords>();
     final records = context.read<WeightRecords>().records;
-    final media = MediaQuery.of(context);
-
-    // FIXME: when coming back from record screen I keep getting view overflow
 
     return Container(
       margin: const EdgeInsets.only(top: 2),

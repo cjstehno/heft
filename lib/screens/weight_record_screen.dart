@@ -85,7 +85,6 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
                         }
                       },
                       onSaved: (value) {
-                        print('Saving: $value');
                         _record = _record.copyWith(timestamp: value);
                       },
                     ),

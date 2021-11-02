@@ -30,7 +30,7 @@ class HeftApp extends StatelessWidget {
         home: HomeScreen(),
         routes: {
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
-          WeightRecordScreen.routeName: (ctx) => WeightRecordScreen(),
+          WeightRecordScreen.routeName: (ctx) => const WeightRecordScreen(),
         },
       ),
     );
