@@ -27,6 +27,15 @@ class HeftApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.brown,
+          ).copyWith(
+            secondary: Colors.green,
+          ),
+          textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.black)),
+          disabledColor: Colors.black12,
+        ),
         home: HomeScreen(),
         routes: {
           SettingsScreen.routeName: (ctx) => SettingsScreen(),

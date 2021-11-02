@@ -43,13 +43,16 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: Column(
-              children: [
-                StatusDisplay(),
-                Expanded(
-                  child: WeightLog(),
-                ),
-              ],
+            body: Container(
+              color: Colors.brown.shade50,
+              child: Column(
+                children: [
+                  const StatusDisplay(),
+                  Expanded(
+                    child: WeightLog(),
+                  ),
+                ],
+              ),
             ),
           );
         } else {

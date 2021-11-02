@@ -34,6 +34,8 @@ To generate the model type adapters (if they change), run the following:
 
 To Do:
 
-* [ ] ensure proper theme usage
 * [ ] about screen - medical disclaimer, link to BMI calc, this is intended for adults
 * [ ] unit testing
+* [ ] tap on trend to see graph of data
+* [ ] tap on weight to see graph of data
+* [ ] tap on BMI to see graph of data

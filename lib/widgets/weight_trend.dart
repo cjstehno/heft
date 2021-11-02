@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class WeightTrend extends StatelessWidget {
-
   @override
   Widget build(final BuildContext context) {
     context.watch<WeightRecords>();
@@ -16,16 +15,18 @@ class WeightTrend extends StatelessWidget {
     final within30d = weightRecords.oldestWithin(90);
     final enabled = mostRecent != null && within30d != null;
 
+    final theme = Theme.of(context);
+
     return Column(
       children: [
-        RecentTrend(mostRecent, within30d,),
+        RecentTrend(mostRecent, within30d),
         Text(
           enabled
               ? DateFormat('M/d/yyyy').format(within30d!.timestamp)
               : '-/-/----',
           style: TextStyle(
             fontSize: 12,
-            color: enabled ? Colors.black : Colors.black12,
+            color: enabled ? Colors.black : theme.disabledColor,
             fontStyle: FontStyle.italic,
           ),
         )
