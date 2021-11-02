@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/providers/weight_records.dart';
-import 'package:heft/screens/settings_screen.dart';
 import 'package:heft/screens/weight_record_screen.dart';
+import 'package:heft/widgets/app_drawer.dart';
 import 'package:heft/widgets/status_display.dart';
 import 'package:heft/widgets/weight_log.dart';
 import 'package:provider/provider.dart';
@@ -20,11 +20,6 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Heft'),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(SettingsScreen.routeName),
-                ),
-                IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: () {
                     context.read<WeightRecords>().export().then((file) {
@@ -32,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                         [file.path],
                         mimeTypes: ['text/plain'],
                         subject: 'Weight Records from Heft.',
-                      ).then((_)=> file.delete());
+                      ).then((_) => file.delete());
                     });
                   },
                 ),
@@ -43,6 +38,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
+            drawer: AppDrawer(),
             body: Container(
               color: Colors.brown.shade50,
               child: Column(
