@@ -4,9 +4,25 @@ An Android weight-tracking app, written using the Flutter framework.
 
 ## Building
 
-### Build and Install on Local Device
+> TBD.
 
-> TBD...
+### Internal Release
+
+For testing on your own device, you can install the app via USB.
+
+First, ensure version info updated in pubspec.yml if releasing new version - the release number will need to be incremented
+each time you want to push a release, though the application version can remain unchanged.
+
+Run the following from the command line (`--release` is used by default):
+
+    flutter build apk --split-per-abi
+
+Then, to install it on a USB-connected device use:
+
+    flutter install 
+
+> **Note:** You can also run the obfuscator, if desired. See [Obfuscating Dart Code](https://flutter.dev/docs/deployment/obfuscate)
+> for more details.
 
 ### Generate Type Adapters
 
@@ -18,14 +34,6 @@ To generate the model type adapters (if they change), run the following:
 
 To Do:
 
-* [ ] hive storage integration
-* [x] properly support screen rotation
-* [ ] ability to set reminder (time and day of week) to log weight.
 * [ ] ensure proper theme usage
 * [ ] about screen - medical disclaimer, link to BMI calc, this is intended for adults
-* [ ] create a home screen widget with current wt, bmi, and an "add" button
 * [ ] unit testing
-
-https://medium.com/flutter-community/storing-local-data-with-hive-and-provider-in-flutter-a49b6bdea75a
-https://blog.logrocket.com/handling-local-data-persistence-flutter-hive/
-https://codingwithdhrumil.com/2021/03/hive-flutter-local-database-example.html
