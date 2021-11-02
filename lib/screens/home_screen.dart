@@ -11,8 +11,6 @@ import 'package:share_plus/share_plus.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
-    // FIXME: implement pull to refresh
-
     return FutureBuilder(
       future: context.read<WeightRecords>().load(),
       builder: (ctx, snap) {

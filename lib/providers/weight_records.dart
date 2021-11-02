@@ -1,11 +1,9 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 import 'package:hive/hive.dart';
-import 'dart:developer' as dev;
-
-// TODO: may be able to simplify this by removing the local cache
-//  - need to play with hive a bit.
 
 class WeightRecords with ChangeNotifier {
   static const _tag = 'heft.provider.weightrecords';
@@ -13,16 +11,17 @@ class WeightRecords with ChangeNotifier {
   final List<WeightRecord> _records = [];
 
   Future<void> load() async {
-    dev.log('loading...');
     final box = await Hive.openBox<WeightRecord>(_weightRecords);
-    dev.log('found ${box.values.length} values in box...');
+
     _records.clear();
-    _records.addAll(box.values.toList());
-    dev.log('loaded ${_records.length} records...', name: _tag);
+    _records.addAll(box.values);
+    _sortRecords();
+
+    dev.log('Loaded ${_records.length} records...', name: _tag);
   }
 
   List<WeightRecord> get records {
-    return _sort(_records);
+    return _records;
   }
 
   WeightRecord? get mostRecent {
@@ -39,7 +38,10 @@ class WeightRecords with ChangeNotifier {
   WeightRecord? oldestWithin(final int days) {
     if (_records.isNotEmpty) {
       final boundary = DateTime.now().subtract(Duration(days: days));
-      return records.lastWhere((r) => r.timestamp.isAfter(boundary));
+      return _records.lastWhere(
+        (r) => r.timestamp.isAfter(boundary),
+        orElse: () => _records[0],
+      );
     } else {
       return null;
     }
@@ -51,6 +53,10 @@ class WeightRecords with ChangeNotifier {
       box.add(record).then((_) {
         // add to cache
         _records.add(record);
+        _sortRecords();
+
+        dev.log('Created: $record.', name: _tag);
+
         notifyListeners();
       });
     });
@@ -60,17 +66,18 @@ class WeightRecords with ChangeNotifier {
     Hive.openBox<WeightRecord>(_weightRecords).then((box) {
       // update box
       box.putAt(
-          box.values
-          .toList(growable: false)
-          .indexWhere((r) => r.id == record.id),
-          record,
+        box.values.toList(growable: false).indexWhere((r) => r.id == record.id),
+        record,
       );
 
       // update the local cache
       _records.setAll(
-          _records.indexWhere((r) => r.id == record.id),
-          [record],
+        _records.indexWhere((r) => r.id == record.id),
+        [record],
       );
+      _sortRecords();
+
+      dev.log('Updated: $record.', name: _tag);
 
       notifyListeners();
     });
@@ -86,19 +93,14 @@ class WeightRecords with ChangeNotifier {
         // remove it from the local list
         _records.removeWhere((r) => r.id == recordId);
 
+        dev.log('Deleted: $recordId.', name: _tag);
+
         notifyListeners();
       });
     });
   }
 
-  // FIXME: do on change
-  static List<WeightRecord> _sort(final List<WeightRecord> recs) {
-    var working = [...recs];
-
-    working.sort((a, b) {
-      return b.timestamp.compareTo(a.timestamp);
-    });
-
-    return working;
+  void _sortRecords() {
+    _records.sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 }
