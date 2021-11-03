@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.heft">
+    package="com.stehno.heft">
    <application
         android:label="heft"
         android:icon="@mipmap/ic_launcher">

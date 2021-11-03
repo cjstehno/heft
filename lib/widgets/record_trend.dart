@@ -6,7 +6,7 @@ class RecordTrend extends StatelessWidget {
   final WeightRecord current;
   final WeightRecord? previous;
 
-  RecordTrend(this.current, this.previous);
+  const RecordTrend(this.current, this.previous);
 
   @override
   Widget build(final BuildContext context) {

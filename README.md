@@ -24,6 +24,19 @@ Then, to install it on a USB-connected device use:
 > **Note:** You can also run the obfuscator, if desired. See [Obfuscating Dart Code](https://flutter.dev/docs/deployment/obfuscate)
 > for more details.
 
+### Upgrading Existing Internal Version
+
+The installation method described above will easily push a release to the attached device; however, it will wipe out any
+preferences or stored data. In order to perform an upgrade (maintaining data) you must do the following:
+
+  adb install -r <the apk for your device>
+
+If you need to push an update without bumping the app version, you can replace the exising with: 
+
+  adb install -r <the apk for your device>
+
+> Note: You will need to determine which apk should be installed for your device (e.g. `app-arm64-v8a-release.apk`).
+
 ### Generate Type Adapters
 
 To generate the model type adapters (if they change), run the following:
@@ -34,9 +47,9 @@ To generate the model type adapters (if they change), run the following:
 
 To Do:
 
-* [ ] make sure data persists after app update
 * [ ] unit testing
 * [ ] tap on trend to see graph of data
 * [ ] tap on weight to see graph of data
 * [ ] tap on BMI to see graph of data
 * [ ] make sure fresh install works ok
+* [ ] app icons

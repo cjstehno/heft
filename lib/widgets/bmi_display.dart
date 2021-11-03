@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heft/models/bmi.dart';
+import 'package:heft/models/units.dart';
 import 'package:heft/providers/bmi_calculator.dart';
 import 'package:heft/providers/preferences.dart';
 import 'package:heft/providers/weight_records.dart';

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:heft/screens/weight_record_screen.dart';
 import 'package:heft/widgets/record_trend.dart';
+import 'package:heft/widgets/timestamp_cell.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class WeightLog extends StatelessWidget {
-
   @override
   Widget build(final BuildContext context) {
     context.watch<WeightRecords>();
@@ -17,38 +17,18 @@ class WeightLog extends StatelessWidget {
       child: records.isNotEmpty
           ? ListView.builder(
               itemCount: records.length,
-              // shrinkWrap: true,
-              // physics: AlwaysScrollableScrollPhysics(),
               itemBuilder: (ctx, idx) {
-                final dateFormat = DateFormat('M/d/yyyy');
-                final timeFormat = DateFormat('H:mm a');
-                const textStyle = TextStyle(fontSize: 18);
-
                 return Dismissible(
                   key: ValueKey(records[idx].id),
                   direction: DismissDirection.endToStart,
                   background: DismissibleBackground(),
                   child: ListTile(
-                    leading: Container(
-                      width: 100,
-                      child: Column(
-                        children: [
-                          Text(
-                            dateFormat.format(records[idx].timestamp),
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            timeFormat.format(records[idx].timestamp),
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.only(top: 10),
-                      alignment: Alignment.centerLeft,
-                    ),
+                    leading: TimestampCell(records[idx].timestamp),
                     title: Center(
-                      child: Text(records[idx].weight.toString(),
-                          style: textStyle),
+                      child: Text(
+                        records[idx].weight.toString(),
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
                     trailing: RecordTrend(
                       records[idx],
@@ -56,8 +36,9 @@ class WeightLog extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.of(context).pushNamed(
-                          WeightRecordScreen.routeName,
-                          arguments: records[idx]);
+                        WeightRecordScreen.routeName,
+                        arguments: records[idx],
+                      );
                     },
                   ),
                   confirmDismiss: (direction) {

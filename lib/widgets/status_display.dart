@@ -17,10 +17,10 @@ class StatusDisplay extends StatelessWidget {
         child: Row(
           children: [
             WeightTrend(),
-            Spacer(),
-            CurrentWeight(),
-            Spacer(),
-            BmiDisplay(),
+            const Spacer(),
+            const CurrentWeight(),
+            const Spacer(),
+            const BmiDisplay(),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 import 'package:heft/providers/weight_records.dart';
@@ -12,7 +12,10 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Directory directory = await path_provider.getApplicationDocumentsDirectory();
+  dev.log('Initializing hive storage into ${directory.path}', name: 'heft.main');
+
   Hive.init(directory.path);
   Hive.registerAdapter(WeightRecordAdapter());
   runApp(HeftApp());

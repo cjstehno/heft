@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:heft/models/bmi.dart';
-import 'package:heft/providers/preferences.dart';
+import 'package:heft/models/units.dart';
 
 // https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html
 class BmiCalculator {

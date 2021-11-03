@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heft/models/units.dart';
 import 'package:heft/providers/preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
