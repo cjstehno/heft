@@ -1,6 +1,7 @@
 import 'package:heft/models/units.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// fIXME: testing
 class Preferences {
   static const _unitsKey = 'user.units';
   static const _heightKey = 'user.height';

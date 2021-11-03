@@ -47,9 +47,10 @@ To generate the model type adapters (if they change), run the following:
 
 To Do:
 
+* [ ] provide means of importing exported csv format
 * [ ] unit testing
-* [ ] tap on trend to see graph of data
-* [ ] tap on weight to see graph of data
-* [ ] tap on BMI to see graph of data
-* [ ] make sure fresh install works ok
+* [ ] tap on trend to see stats (net from first record, this year, last 90 days, last 30 days)
+* [ ] tap on weight to see graph of data (weigth over time)
+* [ ] tap on BMI to see visual of curernt (with my weights for each category)
+* [ ] make sure fresh install works ok (settings need to be required on first)
 * [ ] app icons

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:heft/screens/weight_record_screen.dart';
 import 'package:heft/widgets/record_trend.dart';
-import 'package:heft/widgets/timestamp_cell.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +22,14 @@ class WeightLog extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: DismissibleBackground(),
                   child: ListTile(
-                    leading: TimestampCell(records[idx].timestamp),
+                    leading: Container(
+                      width: 100,
+                      child: Text(
+                        DateFormat('M/d/yyyy').format(records[idx].timestamp),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
                     title: Center(
                       child: Text(
                         records[idx].weight.toString(),
@@ -69,7 +75,7 @@ class WeightLog extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Record for ${DateFormat('M/d/yyyy HH:mm a').format(removedRecord.timestamp)} was deleted.',
+                          'Record for ${DateFormat('M/d/yyyy').format(removedRecord.timestamp)} was deleted.',
                         ),
                         duration: const Duration(seconds: 3),
                       ),

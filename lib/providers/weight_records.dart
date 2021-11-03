@@ -5,8 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/models/weight_record.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+// fIXME: testing
 class WeightRecords with ChangeNotifier {
   static const _tag = 'heft.provider.weightrecords';
   static const _weightRecords = 'weight-records';
@@ -36,9 +38,10 @@ class WeightRecords with ChangeNotifier {
       '${directory.path}/heft-export-${DateTime.now().millisecondsSinceEpoch}.csv',
     );
 
+    final exportFormat = DateFormat('MM-dd-yyyy');
     await exportFile.writeAsString(
       records
-          .map((rec) => '${rec.timestamp},${rec.weight}')
+          .map((rec) => '${exportFormat.format(rec.timestamp)},${rec.weight}')
           .toList()
           .join('\n'),
     );

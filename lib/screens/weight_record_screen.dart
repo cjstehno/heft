@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:heft/models/units.dart';
@@ -64,30 +66,18 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
                         labelText: 'Date',
                         hintText: 'When did you weigh in?',
                       ),
-                      format: DateFormat('MMM dd yyyy HH:mm a'),
-                      initialValue: _record.timestamp,
+                      format: DateFormat('MMM dd yyyy'),
+                      initialValue:  _record.timestamp,
                       onShowPicker: (context, currentValue) async {
-                        final date = await showDatePicker(
+                        return await showDatePicker(
                           context: context,
                           initialDate: currentValue ?? DateTime.now(),
-                          firstDate:
-                              DateTime.now().subtract(const Duration(days: 90)),
+                          firstDate: DateTime.now()
+                              .subtract(const Duration(days: 365)),
                           lastDate: DateTime.now(),
                         );
-                        if (date != null) {
-                          final time = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(
-                                currentValue ?? DateTime.now()),
-                          );
-                          return DateTimeField.combine(date, time);
-                        } else {
-                          return currentValue;
-                        }
                       },
-                      onSaved: (value) {
-                        _record = _record.copyWith(timestamp: value);
-                      },
+                      onSaved: (value) => _record = _record.copyWith(timestamp: value),
                     ),
                     TextFormField(
                       decoration: InputDecoration(

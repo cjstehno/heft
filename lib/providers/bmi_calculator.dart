@@ -4,6 +4,7 @@ import 'package:heft/models/bmi.dart';
 import 'package:heft/models/units.dart';
 
 // https://www.cdc.gov/healthyweight/assessing/bmi/adult_bmi/index.html
+// fIXME: testing
 class BmiCalculator {
   static Bmi calculate(final Units units, final double ht, final double wt) {
     return units == Units.metric
