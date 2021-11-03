@@ -49,8 +49,8 @@ To Do:
 
 * [ ] provide means of importing exported csv format
 * [ ] unit testing
-* [ ] tap on trend to see stats (net from first record, this year, last 90 days, last 30 days)
-* [ ] tap on weight to see graph of data (weigth over time)
-* [ ] tap on BMI to see visual of curernt (with my weights for each category)
+* [ ] tap on trend to see stats (net from first record, this year, last 90 days, last 30 days) - also drawer
+* [ ] tap on weight to see graph of data (weigth over time) - also drawer
+* [ ] tap on BMI to see visual of curernt (with my weights for each category) - also drawer
 * [ ] make sure fresh install works ok (settings need to be required on first)
 * [ ] app icons

@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeName = '/';
+
   @override
   Widget build(final BuildContext context) {
     return FutureBuilder(
