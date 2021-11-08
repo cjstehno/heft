@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:heft/models/weight_record.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -17,11 +18,13 @@ class DatabaseAccessor {
   }
 
   Future<Database> _initDB() async {
+    dev.log('Initializing database...', name: 'db.databaseaccessor');
     return await openDatabase(
       'heft.db',
       version: 1,
       onOpen: (db) {},
       onCreate: (Database db, int version) async {
+        dev.log('Creating tables...', name: 'db.databaseaccessor');
         await db.execute("""CREATE TABLE weight_records (
           id INTEGER PRIMARY KEY,
           timestamp INTEGER NOT NULL,

@@ -11,10 +11,10 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 // fIXME: testing
 class WeightRecords with ChangeNotifier {
   static const _tag = 'heft.provider.weightrecords';
-  static const _weightRecords = 'weight-records';
   final List<WeightRecord> _records = [];
 
   Future<void> load() async {
+    // FIXME: why is this called twice
     final dbrecs = await DatabaseAccessor.db.retrieveAllRecords();
 
     _records.clear();
