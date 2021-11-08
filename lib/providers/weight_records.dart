@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:heft/db/database_accessor.dart';
 import 'package:heft/models/weight_record.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
@@ -15,10 +15,10 @@ class WeightRecords with ChangeNotifier {
   final List<WeightRecord> _records = [];
 
   Future<void> load() async {
-    final box = await Hive.openBox<WeightRecord>(_weightRecords);
+    final dbrecs = await DatabaseAccessor.db.retrieveAllRecords();
 
     _records.clear();
-    _records.addAll(box.values);
+    _records.addAll(dbrecs);
     _sortRecords();
 
     dev.log('Loaded ${_records.length} records...', name: _tag);
@@ -45,8 +45,9 @@ class WeightRecords with ChangeNotifier {
           .toList()
           .join('\n'),
     );
-    
-    dev.log('Exported ${_records.length} records to csv file (${exportFile.path}).');
+
+    dev.log(
+        'Exported ${_records.length} records to csv file (${exportFile.path}).');
 
     return exportFile;
   }
@@ -64,29 +65,18 @@ class WeightRecords with ChangeNotifier {
   }
 
   void create(final WeightRecord record) {
-    // add to the box
-    Hive.openBox<WeightRecord>(_weightRecords).then((box) {
-      box.add(record).then((_) {
-        // add to cache
-        _records.add(record);
-        _sortRecords();
+    DatabaseAccessor.db.createRecord(record).then((rec) {
+      _records.add(rec);
+      _sortRecords();
 
-        dev.log('Created: $record.', name: _tag);
+      dev.log('Created: $record.', name: _tag);
 
-        notifyListeners();
-      });
+      notifyListeners();
     });
   }
 
   void update(final WeightRecord record) {
-    Hive.openBox<WeightRecord>(_weightRecords).then((box) {
-      // update box
-      box.putAt(
-        box.values.toList(growable: false).indexWhere((r) => r.id == record.id),
-        record,
-      );
-
-      // update the local cache
+    DatabaseAccessor.db.updateRecord(record).then((rec) {
       _records.setAll(
         _records.indexWhere((r) => r.id == record.id),
         [record],
@@ -99,20 +89,13 @@ class WeightRecords with ChangeNotifier {
     });
   }
 
-  void remove(final String recordId) {
-    Hive.openBox<WeightRecord>(_weightRecords).then((box) {
-      // remove it from the box
-      final boxIndex = box.values
-          .toList(growable: false)
-          .indexWhere((r) => r.id == recordId);
-      box.deleteAt(boxIndex).then((_) {
-        // remove it from the local list
-        _records.removeWhere((r) => r.id == recordId);
+  void remove(final int recordId) {
+    DatabaseAccessor.db.deleteRecord(recordId).then((rec) {
+      _records.removeWhere((r) => r.id == recordId);
 
-        dev.log('Deleted: $recordId.', name: _tag);
+      dev.log('Deleted: $recordId.', name: _tag);
 
-        notifyListeners();
-      });
+      notifyListeners();
     });
   }
 

@@ -24,7 +24,7 @@ class _WeightRecordScreenState extends State<WeightRecordScreen> {
   bool _isInit = true;
   bool _editing = false;
   WeightRecord _record = WeightRecord(
-    id: const Uuid().v1(),
+    id: null,
     timestamp: DateTime.now(),
     weight: 0,
   );

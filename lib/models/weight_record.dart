@@ -1,16 +1,6 @@
-import 'package:hive/hive.dart';
-
-part 'weight_record.g.dart';
-
-@HiveType(typeId: 0)
 class WeightRecord {
-  @HiveField(0)
-  final String id;
-
-  @HiveField(1)
+  final int? id;
   final DateTime timestamp;
-
-  @HiveField(2)
   final double weight;
 
   const WeightRecord({
@@ -19,13 +9,20 @@ class WeightRecord {
     required this.weight,
   });
 
+  factory WeightRecord.fromMap(final Map<String, dynamic> map) => WeightRecord(
+        id: map['id'],
+        timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp']),
+        weight: map['weight'],
+      );
+
   @override
   String toString() {
     return 'WeightRecord{id: $id, timestamp: $timestamp, weight: $weight}';
   }
 
+  // FIXME: should this be a factory?
   WeightRecord copyWith({
-    String? id,
+    int? id,
     DateTime? timestamp,
     double? weight,
   }) =>
@@ -34,4 +31,10 @@ class WeightRecord {
         timestamp: timestamp ?? this.timestamp,
         weight: weight ?? this.weight,
       );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'timestamp': timestamp.millisecondsSinceEpoch,
+        'weight': weight,
+      };
 }

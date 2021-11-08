@@ -70,7 +70,7 @@ class WeightLog extends StatelessWidget {
                   },
                   onDismissed: (direction) {
                     final removedRecord = records[idx];
-                    context.read<WeightRecords>().remove(removedRecord.id);
+                    context.read<WeightRecords>().remove(removedRecord.id!);
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
