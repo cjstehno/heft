@@ -1,9 +1,11 @@
 import 'dart:developer' as dev;
+
 import 'package:heft/models/weight_record.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseAccessor {
   static const String _weightRecordsTable = 'weight_records';
+  static const String _tag = 'db.databaseaccessor';
 
   DatabaseAccessor._();
 
@@ -18,13 +20,13 @@ class DatabaseAccessor {
   }
 
   Future<Database> _initDB() async {
-    dev.log('Initializing database...', name: 'db.databaseaccessor');
+    dev.log('Initializing database...', name: _tag);
     return await openDatabase(
       'heft.db',
       version: 1,
       onOpen: (db) {},
       onCreate: (Database db, int version) async {
-        dev.log('Creating tables...', name: 'db.databaseaccessor');
+        dev.log('Creating tables...', name: _tag);
         await db.execute("""CREATE TABLE weight_records (
           id INTEGER PRIMARY KEY,
           timestamp INTEGER NOT NULL,
@@ -34,10 +36,21 @@ class DatabaseAccessor {
     );
   }
 
-  // FIXME: ordering, limiting
-  Future<List<WeightRecord>> retrieveAllRecords() async {
-    final db = await database;
-    final res = await db.query(_weightRecordsTable);
+  Future<List<WeightRecord>> retrieveRecordsWithin(final int days) async {
+    final res = await (await database).query(
+      _weightRecordsTable,
+      orderBy: 'timestamp desc',
+      where: "cast(julianday('now') - julianday(timestamp/1000, 'unixepoch') as INTEGER ) <= ?",
+      whereArgs: [days],
+    );
+    return res.isNotEmpty
+        ? res.map((r) => WeightRecord.fromMap(r)).toList()
+        : [];
+  }
+
+  Future<List<WeightRecord>> retrieveRecords([int? limit]) async {
+    final res = await (await database)
+        .query(_weightRecordsTable, orderBy: 'timestamp desc', limit: limit);
     return res.isNotEmpty
         ? res.map((r) => WeightRecord.fromMap(r)).toList()
         : [];

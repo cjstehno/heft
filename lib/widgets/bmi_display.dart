@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:heft/models/bmi.dart';
-import 'package:heft/models/units.dart';
 import 'package:heft/providers/bmi_calculator.dart';
-import 'package:heft/providers/preferences.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:provider/provider.dart';
 
@@ -13,19 +12,11 @@ class BmiDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     context.watch<WeightRecords>();
 
-    final mostRecent = context.read<WeightRecords>().mostRecent;
-
     return FutureBuilder(
-      future: Preferences.load(),
+      future: BmiCalculator.calculateBmi(context.read<WeightRecords>()),
       builder: (ctx, snap) {
-        if (snap.hasData) {
-          final Bmi? bmi = mostRecent != null
-              ? BmiCalculator.calculate(
-                  Preferences.fetchUnits(snap.data!) ?? Units.imperial,
-                  Preferences.fetchHeight(snap.data!) ?? 0.0,
-                  mostRecent.weight,
-                )
-              : null;
+        if (snap.connectionState == ConnectionState.done) {
+          final bmi = snap.data as Bmi?;
 
           return Column(
             children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heft/models/weight_record.dart';
 import 'package:heft/providers/weight_records.dart';
 import 'package:provider/provider.dart';
 
@@ -9,11 +10,19 @@ class CurrentWeight extends StatelessWidget {
   Widget build(final BuildContext context) {
     context.watch<WeightRecords>();
 
-    final mostRecent = context.read<WeightRecords>().mostRecent;
-
-    return Text(
-      mostRecent != null ? mostRecent.weight.toStringAsFixed(1) : '0.0',
-      style: _style(mostRecent != null),
+    return FutureBuilder(
+      future: context.read<WeightRecords>().mostRecent,
+      builder: (ctx, snap) {
+        if (snap.connectionState == ConnectionState.done) {
+          final mostRecent = snap.data as WeightRecord?;
+          return Text(
+            mostRecent != null ? mostRecent.weight.toStringAsFixed(1) : '0.0',
+            style: _style(mostRecent != null),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 

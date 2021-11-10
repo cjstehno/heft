@@ -11,25 +11,18 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 // fIXME: testing
 class WeightRecords with ChangeNotifier {
   static const _tag = 'heft.provider.weightrecords';
-  final List<WeightRecord> _records = [];
 
-  Future<void> load() async {
-    // FIXME: why is this called twice
-    final dbrecs = await DatabaseAccessor.db.retrieveAllRecords();
-
-    _records.clear();
-    _records.addAll(dbrecs);
-    _sortRecords();
-
-    dev.log('Loaded ${_records.length} records...', name: _tag);
+  Future<List<WeightRecord>> get records async {
+    return DatabaseAccessor.db.retrieveRecords();
   }
 
-  List<WeightRecord> get records {
-    return _records;
+  Future<WeightRecord?> get mostRecent async {
+    final list = await DatabaseAccessor.db.retrieveRecords(1);
+    return list.isNotEmpty ? list[0] : null;
   }
 
-  WeightRecord? get mostRecent {
-    return _records.isNotEmpty ? records[0] : null;
+  Future<List<WeightRecord>> recordsWithin(final int days) async {
+    return DatabaseAccessor.db.retrieveRecordsWithin(days);
   }
 
   Future<File> export() async {
@@ -38,68 +31,41 @@ class WeightRecords with ChangeNotifier {
       '${directory.path}/heft-export-${DateTime.now().millisecondsSinceEpoch}.csv',
     );
 
+    final exporting = await records;
+
     final exportFormat = DateFormat('MM-dd-yyyy');
     await exportFile.writeAsString(
-      records
+      exporting
           .map((rec) => '${exportFormat.format(rec.timestamp)},${rec.weight}')
           .toList()
           .join('\n'),
     );
 
     dev.log(
-        'Exported ${_records.length} records to csv file (${exportFile.path}).');
+      'Exported ${exporting.length} records to csv file (${exportFile.path}).',
+    );
 
     return exportFile;
   }
 
-  WeightRecord? oldestWithin(final int days) {
-    if (_records.isNotEmpty) {
-      final boundary = DateTime.now().subtract(Duration(days: days));
-      return _records.lastWhere(
-        (r) => r.timestamp.isAfter(boundary),
-        orElse: () => _records[0],
-      );
-    } else {
-      return null;
-    }
-  }
-
   void create(final WeightRecord record) {
     DatabaseAccessor.db.createRecord(record).then((rec) {
-      _records.add(rec);
-      _sortRecords();
-
       dev.log('Created: $record.', name: _tag);
-
       notifyListeners();
     });
   }
 
   void update(final WeightRecord record) {
     DatabaseAccessor.db.updateRecord(record).then((rec) {
-      _records.setAll(
-        _records.indexWhere((r) => r.id == record.id),
-        [record],
-      );
-      _sortRecords();
-
       dev.log('Updated: $record.', name: _tag);
-
       notifyListeners();
     });
   }
 
   void remove(final int recordId) {
     DatabaseAccessor.db.deleteRecord(recordId).then((rec) {
-      _records.removeWhere((r) => r.id == recordId);
-
       dev.log('Deleted: $recordId.', name: _tag);
-
       notifyListeners();
     });
-  }
-
-  void _sortRecords() {
-    _records.sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 }
