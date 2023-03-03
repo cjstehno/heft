@@ -20,7 +20,6 @@ class WeightRecord {
     return 'WeightRecord{id: $id, timestamp: $timestamp, weight: $weight}';
   }
 
-  // FIXME: should this be a factory?
   WeightRecord copyWith({
     int? id,
     DateTime? timestamp,
